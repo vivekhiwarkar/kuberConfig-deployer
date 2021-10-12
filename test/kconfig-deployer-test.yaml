@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kconfig-deployer
+  labels:
+    app: auto-deployment
+data:
+  DeploymentName: auto-deployment
+  DeploymentReplicas: "1"
+  DeploymentImage: busybox:latest

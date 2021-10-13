@@ -28,7 +28,7 @@ func CustomController(clientset kubernetes.Interface, configMapInformer informer
 	controller := &controller{
 		clientset:            clientset,
 		configMapLister:      configMapInformer.Lister(),
-		workQueue:            workqueue.NewNamedRateLimitingQueue(workqueue.DefaultControllerRateLimiter(), "konfig-deployer"),
+		workQueue:            workqueue.NewNamedRateLimitingQueue(workqueue.DefaultControllerRateLimiter(), "kconfig-deployer"),
 		configMapCacheSynced: configMapInformer.Informer().HasSynced,
 	}
 

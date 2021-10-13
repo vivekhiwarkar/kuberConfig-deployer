@@ -24,7 +24,7 @@ data:
 ```
 Resultant deployment will inherit the namespace from configmap.
 
-### Install Kconfig-deployer
+## Install Kconfig-deployer
 
 Requirment: A k8s cluster and a kubectl CLI configured to interact with the cluster.
 
@@ -46,6 +46,6 @@ Terminal session 1 - Watch the deployments
 Terminal session 2 - Create a configmap with mandatory fields
 
 ``` {.sourceCode .bash}
-> kubectl apply -f konfig-deployer/test/
+> kubectl apply -f kconfig-deployer/test/
 ```
 You can now see a new deployment running in Terminal session 1

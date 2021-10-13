@@ -17,15 +17,15 @@ import (
 	"k8s.io/client-go/util/workqueue"
 )
 
-type custom_controller struct {
+type controller struct {
 	clientset            kubernetes.Interface
 	configMapLister      listersv1.ConfigMapLister
 	workQueue            workqueue.RateLimitingInterface
 	configMapCacheSynced cache.InformerSynced
 }
 
-func CustomController(clientset kubernetes.Interface, configMapInformer informersv1.ConfigMapInformer) *custom_controller {
-	custom_controller := &custom_controller{
+func CustomController(clientset kubernetes.Interface, configMapInformer informersv1.ConfigMapInformer) *controller {
+	controller := &controller{
 		clientset:            clientset,
 		configMapLister:      configMapInformer.Lister(),
 		workQueue:            workqueue.NewNamedRateLimitingQueue(workqueue.DefaultControllerRateLimiter(), "konfig-deployer"),
@@ -34,14 +34,14 @@ func CustomController(clientset kubernetes.Interface, configMapInformer informer
 
 	configMapInformer.Informer().AddEventHandler(
 		cache.ResourceEventHandlerFuncs{
-			AddFunc: custom_controller.handleAdd,
+			AddFunc: controller.handleAdd,
 		},
 	)
 
-	return custom_controller
+	return controller
 }
 
-func (c *custom_controller) Run(stopCh <-chan struct{}) {
+func (c *controller) Run(stopCh <-chan struct{}) {
 	fmt.Println("Starting Custom Controller....")
 	if !cache.WaitForCacheSync(stopCh, c.configMapCacheSynced) {
 		fmt.Println("Waiting for the cache to be synced....")
@@ -52,12 +52,12 @@ func (c *custom_controller) Run(stopCh <-chan struct{}) {
 	<-stopCh
 }
 
-func (c *custom_controller) worker() {
+func (c *controller) worker() {
 	for c.processItem() {
 	}
 }
 
-func (c *custom_controller) processItem() bool {
+func (c *controller) processItem() bool {
 	item, shutdown := c.workQueue.Get()
 	if shutdown {
 		return false
@@ -83,7 +83,7 @@ func (c *custom_controller) processItem() bool {
 	return true
 }
 
-func (c *custom_controller) createDeployment(ns, name string) error {
+func (c *controller) createDeployment(ns, name string) error {
 	ctx := context.Background()
 
 	configMap, err := c.configMapLister.ConfigMaps(ns).Get(name)
@@ -138,6 +138,6 @@ func (c *custom_controller) createDeployment(ns, name string) error {
 	return nil
 }
 
-func (c *custom_controller) handleAdd(obj interface{}) {
+func (c *controller) handleAdd(obj interface{}) {
 	c.workQueue.Add(obj)
 }

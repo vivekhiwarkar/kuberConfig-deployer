@@ -62,3 +62,4 @@ spec:
       - image: vivekhiwarkar/kconfig-deployer:0.1.0
         name: kconfig-deployer-image
       serviceAccountName: kconfig-deployer-service-acc
+      

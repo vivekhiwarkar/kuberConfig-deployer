@@ -8,3 +8,4 @@ data:
   DeploymentName: auto-deployment
   DeploymentReplicas: "1"
   DeploymentImage: busybox:latest
+  

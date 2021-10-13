@@ -17,7 +17,6 @@ func main() {
 
 	config, err := rest.InClusterConfig()
 	if err != nil {
-		// fallback to kubeconfig
 		kubeconfig := filepath.Join("/home/infracloud", ".kube", "config")
 		if envvar := os.Getenv("KUBECONFIG"); len(envvar) > 0 {
 			kubeconfig = envvar
@@ -30,7 +29,6 @@ func main() {
 	}
 	clientset, err := kubernetes.NewForConfig(config)
 	if err != nil {
-		// handle error
 		fmt.Printf("error %s, creating clientset\n", err.Error())
 	}
 

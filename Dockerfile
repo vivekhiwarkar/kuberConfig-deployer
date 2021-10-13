@@ -11,4 +11,4 @@ RUN go install
 RUN mkdir -p bin
 RUN go build -o bin/
 
-ENTRYPOINT ["/go/src/konfig-deployer/bin/kconfig-deployer"]
+ENTRYPOINT ["/go/src/kconfig-deployer/bin/kconfig-deployer"]
